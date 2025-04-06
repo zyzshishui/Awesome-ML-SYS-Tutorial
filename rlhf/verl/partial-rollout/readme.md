@@ -22,9 +22,13 @@ K1.5 的训练可以细分为 pretrain，vanila SFT，long-CoT SFT 和 RL 四个
 
 在进行 long context RL 训练的过程中，如果不对模型的输出长度做出控制，会很容易观测到 answer length 的显著增加。虽然这带来了更好的性能，但过长的推理过程在训练和推理时成本高昂，而且人类通常不倾向于过度思考。因此，作者引入了一个长度惩罚项，来控制模型的输出长度：
 
-$$ \text{len\_reward}(i) = \begin{cases} \lambda & \text{if } r(x, y_i, y^*) = 1 \\ \min(0, \lambda) & \text{if } r(x, y_i, y^*) = 0 \end{cases} $$
+$$
+\mathrm{len\_reward}(i) = \begin{cases} \lambda & \text{if } r(x, \mathrm{y_i}, y^*) = 1 \\ \min(0, \lambda) & \text{if } r(x, \mathrm{y_i}, y^*) = 0 \end{cases}
+$$
 
-$$ \lambda = 0.5 - \frac{\text{len}(i) - \text{min\_len}}{\text{max\_len} - \text{min\_len}} $$
+$$
+\lambda = 0.5 - \frac{\text{len}(i) - \mathrm{min\_len}}{\mathrm{max\_len} - \mathrm{min\_len}}
+$$
 
 分开想想这几种情况：
 
@@ -33,7 +37,7 @@ $$ \lambda = 0.5 - \frac{\text{len}(i) - \text{min\_len}}{\text{max\_len} - \tex
 3. 最短的推理过程，正确的答案。$len\_reward = 0.5$，鼓励模型生成此推理过程。
 4. 最短的推理过程，错误的答案。$len\_reward = 0$，对模型没有影响。
 
-对于长度在 $\frac{\text{max\_len} + \text{min\_len}}{2}$ 以下的的推理过程，如果答案错误，则 length reward 为 0，如果答案正确，则 length reward 大于 0 且随着 length 递减。超过这个长度的 reasoning path，无论答案正误与否，都给一样的负分 length reward。
+对于长度在 $\frac{\mathrm{max\_len} + \mathrm{min\_len}}{2}$ 以下的的推理过程，如果答案错误，则 length reward 为 0，如果答案正确，则 length reward 大于 0 且随着 length 递减。超过这个长度的 reasoning path，无论答案正误与否，都给一样的负分 length reward。
 
 ### 采样策略
 
