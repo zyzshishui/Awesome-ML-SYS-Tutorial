@@ -95,11 +95,3 @@ SPECIFIC_TENSOR_LIST = {
     "gsm8k": [] 
 }
 ```
-
-## TODO
-
-1. prompt 可以优化一下，现在按照 `#### <answer>` 输出不是太稳定；reward 计算也可以优化 ，现在 strict 模式下严格提取 `####` 之后的内容，不匹配就 0 分了，可以考虑加个格式惩罚。flexible 模式（提取最后出现的数字）没跑过，之后可以试试。
-
-2. `gsm8k_obs()` 应该提供feedback；
-3. 不同任务可视化用到的 metric 不一样，目前没有处理。
-

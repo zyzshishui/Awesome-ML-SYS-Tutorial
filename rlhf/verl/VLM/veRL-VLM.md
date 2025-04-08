@@ -4,6 +4,8 @@
 
 ### 创建新的 docker
 
+使用前需要配置好 `WANDB_API_KEY`，参考[这个过程](https://community.wandb.ai/t/where-can-i-find-the-api-token-for-my-project/7914)。
+
 ```bash
 # 如果你的系统没有配置过 HF_TOKEN 和 WANDB_API_KEY，请先配置好
 # 这里的 cache 映射路径是在 atlas 集群上，如果需要使用自己的路径，请自行修改
@@ -66,19 +68,11 @@ python3 -m uv pip install --upgrade pip
 python3 -m uv pip install -e "python[all]" --find-links https://flashinfer.ai/whl/cu124/torch2.5/flashinfer-python
 ```
 
-## 临时性缺陷修复 PR
-请将以下缺陷修复的修改应用到本地 sglang 和 verl 的代码中：
-- sgl-project/sglang#4915
-- volcengine/verl#824
-
 ## 4 卡启动 Qwen2.5VL GRPO 训练脚本，并且使用 SGLang 作为 rollout 引擎
-
-使用前需要配置好 `WANDB_API_KEY`，参考[这个过程](https://community.wandb.ai/t/where-can-i-find-the-api-token-for-my-project/7914)。
 
 ```bash
 cd ~/verl
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-export WANDB_API_KEY={YOUR_WANDB_API_KEY}
 
 # 拉取并预处理 geo3k 数据集
 python examples/data_preprocess/geo3k.py --local_dir ~/data/geo3k
